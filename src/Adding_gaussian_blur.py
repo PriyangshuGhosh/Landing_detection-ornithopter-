@@ -9,9 +9,6 @@ def add_gaussian_noise(image, mean=0, std=10000):
     noisy = np.clip(noisy, 0, 255)
     return noisy.astype(np.uint8)
 
-def gaussian_blur(image, ksize=10, sigma=0):
-    return cv2.GaussianBlur(image, (ksize, ksize), sigma)
-
 # -------- Camera Capture --------
 cap = cv2.VideoCapture(0)  # 0 = default camera
 
@@ -42,14 +39,10 @@ cv2.destroyAllWindows()
 
 # -------- Apply Gaussian Noise --------
 noisy_image = add_gaussian_noise(image, std=15)
-gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
-smooth_noisy = gaussian_blur(gray, ksize=7)
 
 # -------- Display Results --------
 cv2.imshow("Original Image", image)
 cv2.imshow("Gaussian Noisy Image", noisy_image)
-cv2.imshow("Smoothed Noisy Image", smooth_noisy)
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
