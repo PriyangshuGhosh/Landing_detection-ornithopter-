@@ -3,7 +3,6 @@ import numpy as np
 
 # -------- Gaussian Noise Function --------
 def add_gaussian_noise(image, mean=0, std=10000):
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     noise = np.random.normal(mean, std, gray.shape)
     noisy = gray.astype(np.uint8) + noise
     noisy = np.clip(noisy, 0, 255)
@@ -41,10 +40,11 @@ cap.release()
 cv2.destroyAllWindows()
 
 # -------- Apply Gaussian Noise --------
-noisy_image = add_gaussian_noise(image, std=15)
-gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-smooth_noisy = gaussian_blur(gray, ksize=7)
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+noisy_image = add_gaussian_noise(gray, std=15)
+
+smooth_noisy = gaussian_blur(noisy_image, ksize=15)
 
 # -------- Display Results --------
 cv2.imshow("Original Image", image)
