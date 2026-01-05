@@ -13,9 +13,8 @@ while True:
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     enhanced = clahe_tool.apply(gray)
     blur = cv2.GaussianBlur(enhanced, (5, 5), 1.5)
-    edges = cv2.Canny(blur, 100, 200) # Higher thresholds = less noise
+    edges = cv2.Canny(blur, 100, 200) 
 
-    # Increased threshold and minLineLength to filter noise
     lines = cv2.HoughLinesP(edges, 1, np.pi/180, threshold=100, minLineLength=100, maxLineGap=5)
 
     if lines is not None:
@@ -26,16 +25,14 @@ while True:
             
             dx /= length
             dy /= length
-            nx, ny = -dy, dx # Normal vector
+            nx, ny = -dy, dx
             cx, cy = (x1 + x2) // 2, (y1 + y2) // 2
 
-            # Probing for parallel edge
             max_dist = int(min(width, height) * 0.1)
             pos_edge = 0
             neg_edge = 0
 
-            # Scan with direction-agnostic persistence
-            for i in range(5, max_dist): # Start at 5 to skip the line itself
+            for i in range(5, max_dist): 
                 px, py = int(cx + i * nx), int(cy + i * ny)
                 if 0 <= px < width and 0 <= py < height:
                     if edges[py, px] == 255:
@@ -49,15 +46,13 @@ while True:
                         neg_edge = i
                         break
 
-            # VALIDATION: Only draw if we found a likely parallel edge (a rectangle)
             if pos_edge > 0 or neg_edge > 0:
                 thickness = (pos_edge if pos_edge > 0 else 0) + (neg_edge if neg_edge > 0 else 0)
-                if thickness < 15: continue # Ignore too-thin noise
+                if thickness < 15: continue
 
                 b = thickness / 2
                 p1, p2, n = np.array([x1, y1]), np.array([x2, y2]), np.array([nx, ny])
                 
-                # Center the rectangle on the detected mass
                 shift = (pos_edge - neg_edge) / 2
                 center_p1 = p1 + shift * n
                 center_p2 = p2 + shift * n
