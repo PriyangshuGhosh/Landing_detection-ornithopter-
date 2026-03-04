@@ -142,3 +142,7 @@ Week 1 → Math + preprocessing + forward pass
 Week 2 → Backprop + train on mini dataset
 
 Week 3 → Improve preprocessing, try CNN manually, visualize results
+
+
+*********************************************************************
+AI GENERATED
