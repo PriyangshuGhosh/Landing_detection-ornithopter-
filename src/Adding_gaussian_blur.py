@@ -1,7 +1,6 @@
 import cv2
 import numpy as np
 
-# -------- Gaussian Noise Function --------
 def add_gaussian_noise(image, mean=0, std=10000):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     noise = np.random.normal(mean, std, gray.shape)
@@ -9,8 +8,7 @@ def add_gaussian_noise(image, mean=0, std=10000):
     noisy = np.clip(noisy, 0, 255)
     return noisy.astype(np.uint8)
 
-# -------- Camera Capture --------
-cap = cv2.VideoCapture(0)  # 0 = default camera
+cap = cv2.VideoCapture(0) 
 
 if not cap.isOpened():
     raise RuntimeError("Could not open camera")
@@ -26,10 +24,10 @@ while True:
 
     key = cv2.waitKey(1)
 
-    if key == 32:  # SPACE key
+    if key == 32:  
         image = frame.copy()
         break
-    elif key == 27:  # ESC key
+    elif key == 27: 
         cap.release()
         cv2.destroyAllWindows()
         exit()
@@ -37,10 +35,8 @@ while True:
 cap.release()
 cv2.destroyAllWindows()
 
-# -------- Apply Gaussian Noise --------
 noisy_image = add_gaussian_noise(image, std=15)
 
-# -------- Display Results --------
 cv2.imshow("Original Image", image)
 cv2.imshow("Gaussian Noisy Image", noisy_image)
 
